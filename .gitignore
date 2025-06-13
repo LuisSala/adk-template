@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+*.egg-info/
+
+# Log files
+*.log
+*.tmp
+*.swp
+
+# Environments
+venv/
+.venv/
+
+# # IDE files
+# .idea/
+# .vscode/
+# *.spyderproject/
+# *.pydevproject
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secret files
+.env
+*.key

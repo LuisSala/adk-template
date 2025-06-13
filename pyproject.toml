@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "python-google-adk-agent"
+version = "0.1.0"
+description = "Start a simple agent using the Google Agent Development Kit for Python"
+authors = ["Google LLC"]
+#packages = []
+
+[tool.poetry.dependencies]
+python = "^3.12"
+google-adk = "^1.3.0"
+
+[tool.poetry.scripts]
+app = 'src.main:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
