@@ -7,10 +7,10 @@ authors = ["Google LLC"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-google-adk = "^1.3.0"
+google-adk = "^1.13.0"
 
 [tool.poetry.scripts]
-app = 'src.main:main'
+app = 'adk run agents/my_first_agent'
 
 [build-system]
 requires = ["poetry-core"]
