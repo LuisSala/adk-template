@@ -724,7 +724,7 @@ google-crc32c = ">=1.5.0,<2.0.0dev"
 grpc-google-iam-v1 = ">=0.12.4,<1.0.0"
 proto-plus = [
     {version = ">=1.25.0,<2.0.0", markers = "python_version >= \"3.13\""},
-    {version = ">=1.22.3,<2.0.0", markers = "python_version < \"3.13\""},
+    {version = ">=1.22.3,<2.0.0"},
 ]
 protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<7.0.0"
 
@@ -772,7 +772,7 @@ grpc-google-iam-v1 = ">=0.12.4,<1.0.0"
 opentelemetry-api = ">=1.9.0"
 proto-plus = [
     {version = ">=1.25.0,<2.0.0", markers = "python_version >= \"3.13\""},
-    {version = ">=1.22.2,<2.0.0", markers = "python_version >= \"3.11\""},
+    {version = ">=1.22.2,<2.0.0", markers = "python_version >= \"3.11\" and python_version < \"3.13\""},
 ]
 protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<7.0.0"
 
@@ -2538,4 +2538,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "eccb34bf56ba3e4cb65c2f9159c561068c239ef004556f813c853b8719b2b79d"
+content-hash = "762f9eff28c0404c9d9b420268b97f5e39461c151e8f10f46f8fefc7b75ecb79"
