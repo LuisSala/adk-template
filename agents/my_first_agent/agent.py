@@ -1,8 +1,8 @@
 import datetime
-from zoneinfo import ZoneInfo
+
 import random
 from google.adk.agents import Agent
-
+from google.adk.tools import google_search, AgentTool
 
 
 def get_weather(city: str) -> dict:
@@ -14,46 +14,25 @@ def get_weather(city: str) -> dict:
     Returns:
         dict: status and result or error msg.
     """
-    if city.lower() == "new york":
-        return {
-            "status": "success",
-            "report": (
-                "The weather in New York is sunny with a temperature of 25 degrees"
-                " Celsius (77 degrees Fahrenheit)."
-            ),
-        }
-    else:
-        return {
-            "status": "error",
-            "error_message": f"Weather information for '{city}' is not available.",
-        }
+    conditions = ["sunny", "cloudy", "rainy", "snowy", "windy"]
+    condition = random.choice(conditions)
+    temp_celsius = random.randint(-10, 35)
+    temp_fahrenheit = int(temp_celsius * 9 / 5 + 32)
+    report = (
+        f"The weather in {city.title()} is {condition} with a temperature of"
+        f" {temp_celsius} degrees Celsius ({temp_fahrenheit} degrees Fahrenheit)."
+    )
+    return {"status": "success", "report": report}
 
 
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city.
-
-    Args:
-        city (str): The name of the city for which to retrieve the current time.
+def get_current_time() -> dict:
+    """Returns the current server time and timezone.
 
     Returns:
         dict: status and result or error msg.
     """
-
-    if city.lower() == "new york":
-        tz_identifier = "America/New_York"
-    else:
-        return {
-            "status": "error",
-            "error_message": (
-                f"Sorry, I don't have timezone information for {city}."
-            ),
-        }
-
-    tz = ZoneInfo(tz_identifier)
-    now = datetime.datetime.now(tz)
-    report = (
-        f'The current time in {city} is {now.strftime("%Y-%m-%d %H:%M:%S %Z%z")}'
-    )
+    now = datetime.datetime.now().astimezone()
+    report = f'The current server time is {now.strftime("%Y-%m-%d %H:%M:%S %Z%z")}'
     return {"status": "success", "report": report}
 
 
@@ -69,14 +48,36 @@ def get_stock_price(symbol: str) -> float:
     return random.uniform(100.00, 400.00)
 
 
-root_agent = Agent(
-    name="weather_time_agent",
-    model="gemini-2.0-flash",
+search_agent = Agent(
+    name="search_agent",
+    include_contents="none",
+    model="gemini-2.5-flash",
+    description="Professional search assistant with Google Search capabilities",
+    instruction="Answer questions using Google Search when needed. Always cite sources.",
+    tools=[google_search],
+)
+
+weather_time_stock_agent = Agent(
+    name="weather_time_stock_agent",
+    model="gemini-2.5-flash",
     description=(
-        "Agent to answer questions about the time and weather in a city."
+        "Agent to answer questions about the current time, the weather in a city, and the latest stock price of a company."
     ),
     instruction=(
-        "You are a helpful agent who can answer user questions about the time and weather in a city, and stock prices."
+        "You are a helpful agent who can answer user questions about the time and weather in a city, and stock prices. If the user requests something you're not capable of supporting, transfer back to main_agent for dispatching to a more appropriate agent."
     ),
-    tools=[get_weather, get_current_time,get_stock_price],
+    tools=[get_weather, get_current_time, get_stock_price],
 )
+
+root_agent = Agent(
+    name="root_agent",
+    model="gemini-2.5-flash",
+    description=("Agent that routes requests to the sub-agent best-suited to a task."),
+    instruction=(
+        "Use the tools at your disposal or any sub-agents to respond to the user's request."
+    ),
+    sub_agents=[weather_time_stock_agent],
+    tools=[AgentTool(search_agent)],
+)
+
+# root_agent = search_agent
